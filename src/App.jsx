@@ -1,17 +1,21 @@
-import Header from "./components/Header";
-import MovieList from "./components/MovieList";
-import Sidebar from "./components/Sidebar";
-
+import { useState, useReducer } from "react";
+import { MovieContext, ThemeContext } from "./context";
+import Page from "./Page";
+import { cartReducer, initialState } from "./reducers/CartReducer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const App = () => {
+  const [darkMode, setDarkMode] = useState(true);
+  const [state, dispatch] = useReducer(cartReducer, initialState);
+
   return (
     <>
-      <Header />
-      <main>
-        <div className="container grid lg:grid-cols-[218px_1fr] gap-[3.5rem]">
-          <Sidebar />
-          <MovieList />
-        </div>
-      </main>
+      <ThemeContext.Provider value={{ darkMode, setDarkMode }}>
+        <MovieContext.Provider value={{ state, dispatch }}>
+          <Page />
+          <ToastContainer />
+        </MovieContext.Provider>
+      </ThemeContext.Provider>
     </>
   );
 };
